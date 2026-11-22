@@ -1,0 +1,56 @@
+# 빌드·시험 후 설치판(setup.exe)과 포터블판(zip)을 만든다. 실제 작업은 로컬과 같은 release.ps1이 한다.
+#   - Actions 탭에서 수동 실행(workflow_dispatch): 결과물을 'Artifacts'로만 올림 (릴리스 안 만듦)
+#   - v로 시작하는 태그를 올리면(예: v1.0.0): GitHub Releases에 두 파일과 체크섬을 올림
+# 태그 버전은 src/AssemblyInfo.cs의 AssemblyFileVersion 앞 세 자리와 같아야 한다.
+name: build
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress }
+
+      - name: Build, test, package
+        id: ver
+        shell: pwsh
+        run: ./release.ps1
+
+      - name: Check tag matches version
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          if ('${{ github.ref_name }}' -ne 'v${{ steps.ver.outputs.version }}') {
+            throw "태그 ${{ github.ref_name }} 와 exe 버전 v${{ steps.ver.outputs.version }} 가 다릅니다. src/AssemblyInfo.cs 를 먼저 올리세요."
+          }
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: DefenderTray-${{ steps.ver.outputs.version }}
+          path: |
+            dist/*.exe
+            dist/*.zip
+            dist/SHA256SUMS.txt
+
+      - name: Release
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = '${{ steps.ver.outputs.version }}'
+          gh release create '${{ github.ref_name }}' "dist/DefenderTray-$v-setup.exe" "dist/DefenderTray-$v-portable.zip" dist/SHA256SUMS.txt `
+            --title "DefenderTray $v" --notes-file .github/release-notes.md
