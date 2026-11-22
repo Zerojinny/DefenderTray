@@ -73,7 +73,7 @@ english.DefenderKept=Defender exclusions, scheduled scan and SmartScreen setting
 [Tasks]
 Name: "startup"; Description: "{cm:TaskStartup}"
 Name: "shellmenu"; Description: "{cm:TaskShellMenu}"; Flags: unchecked
-; 바로가기 (시작 메뉴는 기본 체크). 끄면 제거는 설정 → 앱 또는 트레이 메뉴 '설정 → 프로그램 제거'로 함
+; 바로가기 (시작 메뉴는 기본 체크). 끄면 제거는 설정 → 앱에서 함
 Name: "startmenu"; Description: "{cm:TaskStartMenu}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 

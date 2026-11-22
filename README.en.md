@@ -131,7 +131,7 @@ Scan a &connected drive ▸
 View &log...
 ─────────────
 Se&ttings ▸  Scheduled scan settings... / Notifications ▸ / Revert external changes ▸ /
-             Suggest a scan for new drives / Language / 언어 ▸ / Start with Windows / Uninstall... (installed edition)
+             Suggest a scan for new drives / Language / 언어 ▸ / Start with Windows
 Open Windows &Security
 &Refresh
 ─────────────

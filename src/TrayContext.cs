@@ -92,15 +92,6 @@ namespace DefenderTray
             settingsMenu.DropDownItems.Add(new ToolStripSeparator());
             settingsMenu.DropDownItems.Add(BuildLanguageMenu());
             settingsMenu.DropDownItems.Add(startupItem);
-            // 설치판에서만: 트레이를 끝내면서 제거 프로그램 실행 (실행 중이라 제거가 막히는 일 없음)
-            if (Program.UninstallerPath() != null)
-            {
-                settingsMenu.DropDownItems.Add(new ToolStripSeparator());
-                settingsMenu.DropDownItems.Add(new ToolStripMenuItem(Tr.T("프로그램 제거(&Z)...", "&Uninstall..."), null, (s, e) =>
-                {
-                    if (Program.RunUninstaller()) ExitThread();
-                }));
-            }
             // 작업 스케줄러 조회는 느릴 수 있어 설정 메뉴를 열 때만 확인
             settingsMenu.DropDownOpening += (s, e) => { startupItem.Checked = IsStartupRegistered(); };
 
