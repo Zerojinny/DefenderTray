@@ -33,9 +33,40 @@ namespace DefenderTray.Tests
             LocalGpoTests();
             SmartScreenTests();
             LanguageTests();
+            SignatureUpdateTests();
             Console.WriteLine();
             Console.WriteLine(failed == 0 ? "ALL PASSED (" + passed + ")" : failed + " FAILED, " + passed + " passed");
             return failed == 0 ? 0 : 1;
+        }
+
+        // ----- 보호 업데이트 -----
+        static void SignatureUpdateTests()
+        {
+            var now = new DateTime(2026, 11, 22, 15, 0, 0);
+            Eq("오늘 08:43", SignatureUpdate.WhenLabel(new DateTime(2026, 11, 22, 8, 43, 0), now), "when today");
+            Eq("어제 23:10", SignatureUpdate.WhenLabel(new DateTime(2026, 11, 21, 23, 10, 0), now), "when yesterday");
+            Eq("3일 전 (11-19)", SignatureUpdate.WhenLabel(new DateTime(2026, 11, 19, 9, 0, 0), now), "when days ago");
+
+            var fresh = new SigInfo { Version = "1.463.411.0", LastUpdated = new DateTime(2026, 11, 22, 8, 43, 0), AgeDays = 0 };
+            var old = new SigInfo { Version = "1.463.1.0", LastUpdated = new DateTime(2026, 11, 18, 8, 0, 0), AgeDays = 4 };
+            var noAge = new SigInfo { Version = "1.463.1.0", LastUpdated = new DateTime(2026, 11, 18, 8, 0, 0) };
+            True(!SignatureUpdate.IsStale(fresh, 3, now), "fresh not stale");
+            True(SignatureUpdate.IsStale(old, 3, now), "4 days stale at 3");
+            True(!SignatureUpdate.IsStale(old, 7, now), "4 days not stale at 7");
+            True(!SignatureUpdate.IsStale(old, 0, now), "warning off");
+            True(SignatureUpdate.IsStale(noAge, 3, now), "age from date");
+            True(!SignatureUpdate.IsStale(null, 3, now), "no info");
+
+            Eq("보호 업데이트: 1.463.411.0 (오늘 08:43)", SignatureUpdate.StatusLine(fresh, now), "status line");
+            Eq("보호 업데이트: 확인할 수 없음", SignatureUpdate.StatusLine(null, now), "status unknown");
+            True(SignatureUpdate.ExplainCode(0x80072EE7).StartsWith("업데이트 서버에 연결할 수 없습니다"), "explain offline");
+            True(SignatureUpdate.ExplainCode(0x80070005).Contains("0x80070005"), "explain other");
+
+            Tr.Ko = false;
+            Eq("2 days ago (11-20)", SignatureUpdate.WhenLabel(new DateTime(2026, 11, 20, 9, 0, 0), now), "en days ago");
+            Eq("After 1 day", SignatureUpdate.ChoiceLabel(1), "en choice 1");
+            Eq("After 3 days", SignatureUpdate.ChoiceLabel(3), "en choice 3");
+            Tr.Ko = true;
         }
 
         // ----- 검사 범위(조건부 제외) -----

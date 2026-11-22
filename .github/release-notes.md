@@ -2,11 +2,15 @@
 
 **DefenderTray** — Microsoft Defender용 트레이 도구입니다. **Microsoft와 관련 없는 개인 프로젝트입니다.**
 
-## 이번 버전 (1.1.2)
+## 이번 버전 (1.2.0)
 
-- 트레이 메뉴 **설정**에서 "프로그램 제거" 항목을 뺐습니다. 제거는 **설정 → 앱** 또는 시작 메뉴의 "DefenderTray 제거"로 합니다.
+- **보호 업데이트** 기능을 추가했습니다.
+  - 메뉴 위쪽에 보안 인텔리전스(정의) 버전과 마지막 업데이트 시각을 보여 줍니다. 마우스를 올리면 엔진·플랫폼 버전이 나옵니다.
+  - **보호 업데이트 확인**: Windows 보안의 "업데이트 확인"과 같습니다. 백그라운드에서 받고, 끝나면 바뀐 버전 또는 "이미 최신"을 알려 줍니다.
+  - **설정 → 오래된 보호 업데이트 경고**: 마지막 업데이트 뒤 1일 / 3일(기본) / 7일이 지나면 하루에 한 번 알리고, 알림을 누르면 바로 업데이트합니다. 끌 수 있습니다.
+- (1.1.2) 트레이 메뉴 **설정**에서 "프로그램 제거" 항목을 뺐습니다. 제거는 **설정 → 앱** 또는 시작 메뉴의 "DefenderTray 제거"로 합니다.
 - (1.1.1) **이름을 DefenderTray로 정리했습니다.** "Microsoft Defender용 트레이 도구"는 설명으로만 씁니다. Microsoft 상표가 앞에 오면 공식 제품처럼 보일 수 있어서입니다. 실행 파일 이름, 설정·기록 위치는 그대로입니다.
-- 주요 기능: 실시간 보호 켜기/끄기(시간 지정 끄기 포함), 검사 제외 관리(실시간만 제외 포함), SmartScreen 켜기/끄기, 예약 검사 설정, 격리 항목 복원, 외부 변경 감시·알림·되돌리기, 새 드라이브 검사 제안, 한국어/영어 화면.
+- 주요 기능: 실시간 보호 켜기/끄기(시간 지정 끄기 포함), 검사 제외 관리(실시간만 제외 포함), SmartScreen 켜기/끄기, 보호 업데이트 확인, 예약 검사 설정, 격리 항목 복원, 외부 변경 감시·알림·되돌리기, 새 드라이브 검사 제안, 한국어/영어 화면.
 
 ## 받을 파일
 
@@ -30,11 +34,15 @@
 
 **DefenderTray** — tray tool for Microsoft Defender. **This is a personal project and is not affiliated with Microsoft.**
 
-## What's new in 1.1.2
+## What's new in 1.2.0
 
-- Removed "Uninstall" from the tray **Settings** menu. Uninstall from **Settings → Apps** or the "Uninstall DefenderTray" Start menu shortcut.
+- **Protection updates**:
+  - The top of the menu shows the security intelligence version and when it was last updated. Hover over it for the engine and platform versions.
+  - **Check for protection updates**: the same as "Check for updates" in Windows Security. It runs in the background and reports the new version, or "Already up to date".
+  - **Settings → Out-of-date update warning**: once a day, notifies you when updates are older than 1 day, 3 days (default) or 7 days; click the notification to update right away. Can be turned off.
+- (1.1.2) Removed "Uninstall" from the tray **Settings** menu. Uninstall from **Settings → Apps** or the "Uninstall DefenderTray" Start menu shortcut.
 - (1.1.1) **The name is now simply DefenderTray.** "Tray tool for Microsoft Defender" is used only as a description, because putting the Microsoft trademark first could make it look like an official product. The executable name and the settings/log locations are unchanged.
-- Main features: real-time protection on/off (including timed off), exclusions (including real-time-only scope), SmartScreen on/off, scheduled scan settings, quarantine restore, external-change watch/notifications/revert, new-drive scan suggestion, English/Korean UI.
+- Main features: real-time protection on/off (including timed off), exclusions (including real-time-only scope), SmartScreen on/off, protection update check, scheduled scan settings, quarantine restore, external-change watch/notifications/revert, new-drive scan suggestion, English/Korean UI.
 
 ## Downloads
 

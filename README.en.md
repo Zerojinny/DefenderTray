@@ -94,6 +94,12 @@ Get it from [Releases](https://github.com/Zerojinny/DefenderTray/releases).
     - The setting shows as "Enabled" in gpedit and can be reverted there. Unchecking returns it to "Not Configured".
     - The option is locked on PCs where a domain policy sets the same item.
 
+### Protection updates
+- The top of the menu shows the security intelligence version and when it was last updated, e.g. `Protection updates: 1.463.411.0 (today 08:43)`. Hover over it for the engine and platform versions.
+- **Check for protection updates**: the same as "Check for updates" in Windows Security (`Update-MpSignature`). It runs in the background and reports the new version, or "Already up to date", when done.
+  The update source follows Defender's settings and policies.
+- **Out-of-date update warning** (in Settings): once a day, notifies you when updates are older than 1 day, 3 days (default) or 7 days. Click the notification to update right away. Can be turned off.
+
 ### Quarantine
 - Shows quarantined items only: threat name, original location, quarantine time, scheduled automatic deletion, severity.
 - **Restore**, three ways:
@@ -120,6 +126,7 @@ As shown in English (the Korean UI has the same structure):
 ```
 ● Real-time protection: off — back on at 14:30 (25 min left)
 Tamper Protection: off
+Protection updates: 1.463.411.0 (today 08:43)
 ─────────────
 Turn &on real-time protection
 Turn &off real-time protection ▸  For 30 min / 1 h / 2 h / 4 h / Until turned on
@@ -127,11 +134,13 @@ Smart&Screen ▸                    status (3 parts) / parts to turn off / turn 
 ─────────────
 Manage &exclusions ▸
 Scan a &connected drive ▸
+Check for &protection updates
 &Quarantine...
 View &log...
 ─────────────
 Se&ttings ▸  Scheduled scan settings... / Notifications ▸ / Revert external changes ▸ /
-             Suggest a scan for new drives / Language / 언어 ▸ / Start with Windows
+             Suggest a scan for new drives / Out-of-date update warning ▸ /
+             Language / 언어 ▸ / Start with Windows
 Open Windows &Security
 &Refresh
 ─────────────
@@ -152,7 +161,8 @@ E&xit
 | File | Contents |
 | --- | --- |
 | `src/Program.cs` | Entry point, command line (`--exclude-path`, `--register-startup`, `--uninstall-cleanup`, …), single instance |
-| `src/TrayContext*.cs` | Tray menu: background status polling, on/off, timed off, new drives / external-change watch / exclusion menu / scans / SmartScreen |
+| `src/TrayContext*.cs` | Tray menu: background status polling, on/off, timed off, new drives / external-change watch / exclusion menu / scans / SmartScreen / protection updates |
+| `src/SignatureUpdate.cs` | Protection update (security intelligence) status, running updates, out-of-date check |
 | `src/Defender.cs` | State, settings, exclusions and scans via WMI (`root\Microsoft\Windows\Defender`) |
 | `src/DefenderWatch.cs` | Event log parsing; record of changes made by this app (`SelfChanges`) |
 | `src/RevertPlan.cs`, `TimedOff.cs`, `DriveWatch.cs`, `ExclusionScope.cs`, `ScanSchedule.cs` | Pure, testable logic |

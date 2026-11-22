@@ -13,6 +13,7 @@ namespace DefenderTray
     //   TrayContext.Watch.cs      외부 변경 감시·알림·되돌리기
     //   TrayContext.Exclusions.cs 검사 제외 메뉴
     //   TrayContext.Scans.cs      수동 검사, 창 열기
+    //   TrayContext.Updates.cs    보호 업데이트 상태·확인·오래됨 경고
     partial class TrayContext : ApplicationContext
     {
 
@@ -58,6 +59,7 @@ namespace DefenderTray
             tamperItem = new ToolStripMenuItem(Tr.T("변조 방지: 확인 중...", "Tamper Protection: checking..."), null, (s, e) => GuideTamper()) { Enabled = false };
             onItem = new ToolStripMenuItem(Tr.T("실시간 보호 켜기(&O)", "Turn on real-time protection(&O)"), null, (s, e) => Toggle(true, 0, null));
             offItem = BuildOffMenu();
+            BuildSigItems();
 
             // --- 설정 하위 메뉴 ---
             startupItem = new ToolStripMenuItem(Tr.T("Windows 시작 시 실행(&U)", "&Start with Windows"), null, (s, e) => ToggleStartup());
@@ -89,6 +91,7 @@ namespace DefenderTray
             settingsMenu.DropDownItems.Add(notifyMenu);
             settingsMenu.DropDownItems.Add(BuildRevertMenu());
             settingsMenu.DropDownItems.Add(driveSuggestItem);
+            settingsMenu.DropDownItems.Add(BuildStaleMenu());
             settingsMenu.DropDownItems.Add(new ToolStripSeparator());
             settingsMenu.DropDownItems.Add(BuildLanguageMenu());
             settingsMenu.DropDownItems.Add(startupItem);
@@ -99,6 +102,7 @@ namespace DefenderTray
             var menu = new ContextMenuStrip { ShowItemToolTips = true };
             menu.Items.Add(statusItem);
             menu.Items.Add(tamperItem);
+            menu.Items.Add(sigItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(onItem);
             menu.Items.Add(offItem);
@@ -106,6 +110,7 @@ namespace DefenderTray
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(BuildExclusionMenu());
             menu.Items.Add(BuildScanMenu());
+            menu.Items.Add(sigUpdateItem);
             menu.Items.Add(new ToolStripMenuItem(Tr.T("격리 항목(&Q)...", "Quarantine(&Q)..."), null, (s, e) => ShowQuarantine()));
             menu.Items.Add(new ToolStripMenuItem(Tr.T("기록 보기(&L)...", "View log(&L)..."), null, (s, e) => ShowLog()));
             menu.Items.Add(new ToolStripSeparator());
@@ -114,7 +119,7 @@ namespace DefenderTray
             menu.Items.Add(new ToolStripMenuItem(Tr.T("새로 고침(&R)", "Refresh(&R)"), null, (s, e) => Refresh()));
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(new ToolStripMenuItem(Tr.T("종료(&X)", "Exit(&X)"), null, (s, e) => ExitThread()));
-            menu.Opening += (s, e) => { UpdateStatusText(); Refresh(); };
+            menu.Opening += (s, e) => { UpdateStatusText(); sigNextReadUtc = DateTime.MinValue; Refresh(); };
 
             tray = new NotifyIcon
             {
@@ -152,9 +157,12 @@ namespace DefenderTray
             firstPoll = false;
             int ver = toggleVersion;
             int sver = ssVersion;
+            bool readSig = SigReadDue();
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 RtpState st = RtpState.Unknown;
+                SigInfo sig = null;
+                if (readSig) try { sig = SignatureUpdate.Get(); } catch { }
                 bool tamper = false;
                 List<DefenderChange> changes = null;
                 List<DriveEntry> drives = null;
@@ -169,6 +177,7 @@ namespace DefenderTray
                     polling = false;
                     bool stale = ver != toggleVersion;
                     HandleSmartScreen(ss, sver != ssVersion);
+                    if (readSig) HandleSig(sig, true);
                     ApplyPoll(st, tamper, changes, drives, startup, stale);
                     if (pollAgain || stale || sver != ssVersion) { pollAgain = false; Refresh(); }
                 });
@@ -475,6 +484,7 @@ namespace DefenderTray
                 StartScans(targets);
                 return;
             }
+            if (lastBalloonTitle == SigStaleTitle) { StartSigUpdate(); return; }
             ShowWatchDetail();
         }
 

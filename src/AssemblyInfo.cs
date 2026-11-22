@@ -6,8 +6,8 @@
 [assembly: AssemblyTitle("DefenderTray")]
 [assembly: AssemblyProduct("DefenderTray")]
 [assembly: AssemblyDescription("Microsoft Defender용 트레이 도구 / Tray tool for Microsoft Defender. Not affiliated with Microsoft. Microsoft와 관련 없는 개인 프로젝트입니다.")]
-[assembly: AssemblyVersion("1.1.2.0")]
-[assembly: AssemblyFileVersion("1.1.2.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 
 namespace DefenderTray
 {
