@@ -2,9 +2,10 @@
 
 **DefenderTray** — Microsoft Defender용 트레이 도구입니다. **Microsoft와 관련 없는 개인 프로젝트입니다.**
 
-## 이번 버전 (1.1.1)
+## 이번 버전 (1.1.2)
 
-- **이름을 DefenderTray로 정리했습니다.** "Microsoft Defender용 트레이 도구"는 설명으로만 씁니다. Microsoft 상표가 앞에 오면 공식 제품처럼 보일 수 있어서입니다. 실행 파일 이름, 설정·기록 위치는 그대로입니다.
+- 트레이 메뉴 **설정**에서 "프로그램 제거" 항목을 뺐습니다. 제거는 **설정 → 앱** 또는 시작 메뉴의 "DefenderTray 제거"로 합니다.
+- (1.1.1) **이름을 DefenderTray로 정리했습니다.** "Microsoft Defender용 트레이 도구"는 설명으로만 씁니다. Microsoft 상표가 앞에 오면 공식 제품처럼 보일 수 있어서입니다. 실행 파일 이름, 설정·기록 위치는 그대로입니다.
 - 주요 기능: 실시간 보호 켜기/끄기(시간 지정 끄기 포함), 검사 제외 관리(실시간만 제외 포함), SmartScreen 켜기/끄기, 예약 검사 설정, 격리 항목 복원, 외부 변경 감시·알림·되돌리기, 새 드라이브 검사 제안, 한국어/영어 화면.
 
 ## 받을 파일
@@ -29,9 +30,10 @@
 
 **DefenderTray** — tray tool for Microsoft Defender. **This is a personal project and is not affiliated with Microsoft.**
 
-## What's new in 1.1.1
+## What's new in 1.1.2
 
-- **The name is now simply DefenderTray.** "Tray tool for Microsoft Defender" is used only as a description, because putting the Microsoft trademark first could make it look like an official product. The executable name and the settings/log locations are unchanged.
+- Removed "Uninstall" from the tray **Settings** menu. Uninstall from **Settings → Apps** or the "Uninstall DefenderTray" Start menu shortcut.
+- (1.1.1) **The name is now simply DefenderTray.** "Tray tool for Microsoft Defender" is used only as a description, because putting the Microsoft trademark first could make it look like an official product. The executable name and the settings/log locations are unchanged.
 - Main features: real-time protection on/off (including timed off), exclusions (including real-time-only scope), SmartScreen on/off, scheduled scan settings, quarantine restore, external-change watch/notifications/revert, new-drive scan suggestion, English/Korean UI.
 
 ## Downloads
